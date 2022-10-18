@@ -1,0 +1,33 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:36:16Z'
+  groups:
+    -
+      name: 'Windows Server EventLogs'
+  templates:
+    -
+      template: 'Windows Eventlog RDP login monitor'
+      name: 'Windows Eventlog RDP login monitor'
+      groups:
+        -
+          name: 'Windows Server EventLogs'
+      applications:
+        -
+          name: 'Windows EventLog'
+      items:
+        -
+          name: 'Windows Eventlog RDP login'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["Microsoft-Windows-TerminalServices-LocalSessionManager/Operational",,,,^(21|23|24|25)$,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logeventid(21)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Службы удаленных рабочих столов: Успешный вход в систему:'
+              priority: INFO
+              manual_close: 'YES'

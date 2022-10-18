@@ -1,0 +1,117 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:35:04Z'
+  groups:
+    -
+      name: 'OS Windows by Zabbix agent active'
+    -
+      name: Templates
+    -
+      name: 'Windows Clients'
+  templates:
+    -
+      template: 'Windows Eventlog Security Workstations'
+      name: 'Windows Eventlog Security Workstations'
+      groups:
+        -
+          name: 'OS Windows by Zabbix agent active'
+        -
+          name: Templates
+        -
+          name: 'Windows Clients'
+      applications:
+        -
+          name: 'Eventlog Windows'
+      items:
+        -
+          name: 'EventLog Security Workstations'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Security,,,,"@Windows Eventlog Security Workstations eventid to monitor",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Eventlog Windows'
+          triggers:
+            -
+              expression: '{logeventid(4732)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: '[{HOST.NAME}] Добавлен участник в защищенную локальную группу'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+            -
+              expression: '{logeventid(4738)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: '[{HOST.NAME}] Изменена учетная запись пользователя'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+            -
+              expression: '{logeventid(4724)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: '[{HOST.NAME}] Попытка сбросить пароль учетной записи'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+            -
+              expression: '{logeventid(4720)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: '[{HOST.NAME}] Создана локальная учетная запись'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+            -
+              expression: '{logeventid(4726)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: '[{HOST.NAME}] Удалена учетная запись пользователя'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+        -
+          name: 'EventLog Security Workstations - successful login'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Security,,,,4624,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Eventlog Windows'
+          triggers:
+            -
+              expression: '{logeventid(4624)}=1 and {nodata(30)}=0 and {regexp(Administrator)}=1'
+              name: '[{HOST.NAME}] Пользователь Administrator вошел в систему'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS
+            -
+              expression: '{logeventid(4624)}=1 and {nodata(30)}=0 and {regexp(Администратор)}=1'
+              name: '[{HOST.NAME}] Пользователь Администратор вошел в систему'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: EventLogSecurityWS
+                -
+                  tag: WindowsEventLogWS

@@ -1,0 +1,18 @@
+Eventlog DFS Replication (Warning|Error|Critical) eventid to exclude ^(5014)$	[Result is FALSE]
+Eventlog Directory Service (Warning|Error|Critical) eventid to exclude ^(2089|2887|3041)$	[Result is FALSE]
+Windows Eventlog Application (Warning|Error|Critical) eventid to exclude ^(1008)$	[Result is FALSE]
+Windows Eventlog Application (Warning|Error|Critical) eventid triggers ^(6|64|1000|1002|1015|1032|1511|4005|4098|11500)$	[Result is TRUE]
+Windows Eventlog Application (Warning|Error|Critical) sources to exclude ^(CPNetDetours45)$	[Result is FALSE]
+Windows Eventlog Security Domain Controllers average eventid to trigger ^(1102|4621|469[2,3]|4706|471[3-5]|472[4,7]|473[9]|475[4]|4764|4780|4816|486[5-8]|4870|488[2,5]|489[0,2,6]|490[6-8]|4912|496[0-3,5]|497[6-8]|498[3,4]|502[7-9]|503[0,5,7,8]|512[0-3]|537[6,7]|5453|548[0,3-5]|6145|627[5-9]|6280|24586|2459[2-4])$ [Result is TRUE]
+Windows Eventlog Security Domain Controllers critical eventid to trigger ^(4618|4649|4719|4765|4766|4794|4897|4964|5124)$	[Result is TRUE]
+Windows Eventlog Security Domain Controllers eventid to monitor ^(1102|460.|461.|462[1,5]|4649|4675|469[2,3]|4706|471.|472.|473.|474.|475.|476[0-7]|4772|4777|478.|4794|4816|486.|4870|488.|489.|490.|4912|493.|496.|497.|498[3-4]|502.|503.|512.|537[6-7]|5453|548.|6008|6145|627.|6280|2458.|2459.)$ [Result is TRUE]
+Windows Eventlog Security Domain Controllers information eventid to trigger ^(460[8,9]|4616|472[0,2,3,5,6,8,9]|473[0-4]|474[0,3]|475[6-9]|476[0-2,7]|477[2,7]|4781|4864|488[0,1,8]|4891|493[5,6]|6008|24588|24595)$	[Result is TRUE]
+Windows Eventlog Security eventid to monitor ^(1102|4608|4609|4616|4625|4698|4699|4700|4701|4720|4722|4723|4725|4726|4731|4732|4733|4734|4740)$	[Result is TRUE]
+Windows Eventlog Security eventid to trigger ^(1102|4608|4609|4616|4698|4699|4720|4722|4723|4725|4726|4731|4732|4733|4734|4740)$	[Result is TRUE]
+Windows Eventlog Security Workstations eventid to monitor ^(1102|4625|4720|4724|4725|4726|4731|4732|4733|4734|4735|4738|4781)$	[Result is TRUE]
+Windows Eventlog System (Information) eventid to monitor ^(104|4719)$	[Result is TRUE]
+Windows Eventlog System (Warning|Error|Critical) eventid to exclude ^(16|157|225|1111|5807|6038|36874|36887|36888)$	[Result is FALSE]
+Windows Eventlog System (Warning|Error|Critical) eventid triggers ^(1|3|5|6|10|17|24|36|41|50|56|129|138|140|141|153|1001|1007|1015|1073|1116|1125|1127|1129|2001|2004|2013|2511|4719|5719|7031|7038|14526|14530|14534)$	[Result is TRUE]
+Windows Eventlog VEEAM eventid triggers ^(150|190|790)$	[Result is TRUE]
+
+

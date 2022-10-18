@@ -1,0 +1,384 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:37:12Z'
+  groups:
+    -
+      name: 'OS Windows by Zabbix agent active'
+    -
+      name: 'Windows Server EventLogs'
+  templates:
+    -
+      template: 'Windows Eventlog Domain Controller simple triggers'
+      name: 'Windows Eventlog Domain Controller simple triggers'
+      groups:
+        -
+          name: 'OS Windows by Zabbix agent active'
+        -
+          name: 'Windows Server EventLogs'
+      applications:
+        -
+          name: 'Windows EventLog'
+      items:
+        -
+          name: 'Eventlog Active Directory Web Services (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["Active Directory Web Services",,"Warning|Error|Critical",,,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Active Directory Web Services (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Active Directory Web Services (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Active Directory Web Services (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog DFS Replication (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["DFS Replication",,"Warning|Error|Critical",,"@Eventlog DFS Replication (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DFS Replication (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: DFSReplication
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DFS Replication (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: DFSReplication
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DFS Replication (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: DFSReplication
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog Directory Service (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["Directory Service",,"Warning|Error|Critical",,"@Eventlog Directory Service (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Directory Service (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Directory Service (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Directory Service (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog DNS Server (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["DNS Server",,"Warning|Error|Critical",,,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DNS Server (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DNS Server (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog DNS Server (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog File Replication Service (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["File Replication Service",,"Warning|Error|Critical",,,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog File Replication Service (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: FRSReplication
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog File Replication Service (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: FRSReplication
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog File Replication Service (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: FRSReplication
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog Key Management Service (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog["Key Management Service",,"Warning|Error|Critical",,,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Key Management Service (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Key Management Service (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Key Management Service (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog Application (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Application,,"Warning|Error|Critical","@Windows Eventlog Application (Warning|Error|Critical) sources to exclude","@Windows Eventlog Application (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1  and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog Security'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Security,,,,"@Windows Eventlog Security Domain Controllers eventid to monitor",,skip]'
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=7 and {logeventid("@Windows Eventlog Security Domain Controllers average eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Failure) Average: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=7 and {logeventid("@Windows Eventlog Security Domain Controllers critical eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Failure) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=7 and {logeventid("@Windows Eventlog Security Domain Controllers information eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Failure) Information: {ITEM.LASTVALUE3}'
+              priority: INFO
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=8 and {logeventid("@Windows Eventlog Security Domain Controllers critical eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Success) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=8 and {logeventid("@Windows Eventlog Security Domain Controllers information eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Success) Information: {ITEM.LASTVALUE3}'
+              priority: INFO
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=8 and {logeventid("@Windows Eventlog Security Domain Controllers average eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Sucsess) Average: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog System (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[System,,"Warning|Error|Critical",,"@Windows Eventlog System (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog System (Information)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[System,,Information,,"@Windows Eventlog System (Information) eventid to monitor",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Information) Information: {ITEM.LASTVALUE3}'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog

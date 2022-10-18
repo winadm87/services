@@ -1,0 +1,43 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:33:51Z'
+  groups:
+    -
+      name: Templates
+    -
+      name: 'Windows Server EventLogs'
+  templates:
+    -
+      template: 'Windows Eventlog VEEAM simple triggers'
+      name: 'Windows Eventlog VEEAM simple triggers'
+      groups:
+        -
+          name: Templates
+        -
+          name: 'Windows Server EventLogs'
+      applications:
+        -
+          name: 'Windows EventLog'
+      items:
+        -
+          name: 'Eventlog VEEAM'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Veeam Backup,,,,,,skip]'
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {logeventid("@Windows Eventlog VEEAM eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog VEEAM Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+            -
+              expression: '{logseverity(0)}=4 and {logeventid("@Windows Eventlog VEEAM eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog VEEAM Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+            -
+              expression: '{logseverity(0)}=2 and {logeventid("@Windows Eventlog VEEAM eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog VEEAM Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING

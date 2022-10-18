@@ -1,0 +1,285 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:32:14Z'
+  groups:
+    -
+      name: 'OS Windows by Zabbix agent active'
+    -
+      name: Templates
+    -
+      name: 'Windows Server Templates'
+  templates:
+    -
+      template: 'Windows Task Scheduler'
+      name: 'Windows Task Scheduler'
+      groups:
+        -
+          name: 'OS Windows by Zabbix agent active'
+        -
+          name: Templates
+        -
+          name: 'Windows Server Templates'
+      applications:
+        -
+          name: 'Windows Task Scheduler'
+      discovery_rules:
+        -
+          name: 'Windows Tasks discovery'
+          type: ZABBIX_ACTIVE
+          key: 'WindowsTaskScheduler[DiscoverTasks]'
+          delay: 4h
+          lifetime: 1d
+          item_prototypes:
+            -
+              name: 'Task: {#TASKID}: Last Result'
+              type: ZABBIX_ACTIVE
+              key: 'WindowsTaskScheduler[TaskLastResult,{#TASKID}]'
+              delay: 1h
+              history: 30d
+              trends: 180d
+              applications:
+                -
+                  name: 'Windows Task Scheduler'
+              valuemap:
+                name: scheduledtask
+              trigger_prototypes:
+                -
+                  expression: '{last()}<>0 and {last()}<>70 and {last()}<>267009 and {last()}<>1'
+                  name: 'Last launch of {#TASKID} Error: ({ITEM.LASTVALUE1})!'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    -
+                      tag: TaskScheduler
+                    -
+                      tag: WindowsTaskScheduler
+            -
+              name: 'Task: {#TASKID}: Last Run Time'
+              type: ZABBIX_ACTIVE
+              key: 'WindowsTaskScheduler[TaskLastRunTime,{#TASKID}]'
+              delay: 1h
+              history: 30d
+              trends: '0'
+              value_type: TEXT
+              applications:
+                -
+                  name: 'Windows Task Scheduler'
+            -
+              name: 'Task: {#TASKID}: Next Run Time'
+              type: ZABBIX_ACTIVE
+              key: 'WindowsTaskScheduler[TaskNextRunTime,{#TASKID}]'
+              delay: 1h
+              history: 30d
+              trends: '0'
+              value_type: TEXT
+              applications:
+                -
+                  name: 'Windows Task Scheduler'
+  value_maps:
+    -
+      name: scheduledtask
+      mappings:
+        -
+          value: '0'
+          newvalue: Success
+        -
+          value: '0x00041302'
+          newvalue: 'The task will not run at the scheduled times because it has been'
+        -
+          value: '0x00041305'
+          newvalue: 'Properties that are needed to run this task have not been set.'
+        -
+          value: '0x00041307'
+          newvalue: 'No triggers or the existing triggers are disabled or not set'
+        -
+          value: '0x00041308'
+          newvalue: 'Event triggers do not have set run times'
+        -
+          value: '0x0004131B'
+          newvalue: 'Not all specified triggers will start the task'
+        -
+          value: '0x0004131C'
+          newvalue: 'Batch logon privilege needs to be enabled for the task principal'
+        -
+          value: '0x00041325'
+          newvalue: 'The Task Scheduler service has asked the task to run'
+        -
+          value: '0x3'
+          newvalue: '(If robocopy - check logs!)'
+        -
+          value: '0x103'
+          newvalue: 'The operation that was requested is pending completion'
+        -
+          value: '0x41300'
+          newvalue: 'The task is ready to work at the next scheduled time'
+        -
+          value: '0x41301'
+          newvalue: 'The task is running'
+        -
+          value: '0x41303'
+          newvalue: 'The task is not over yet'
+        -
+          value: '0x41304'
+          newvalue: 'There are no more scheduled operations for this task'
+        -
+          value: '0x41306'
+          newvalue: 'The task is complete'
+        -
+          value: '0x800704DD'
+          newvalue: 'The service is not available'
+        -
+          value: '0x800710E0'
+          newvalue: 'The operator or administrator has refused the request'
+        -
+          value: '0x8004130A'
+          newvalue: 'Properties required to run this task have not been set'
+        -
+          value: '0x8004130B'
+          newvalue: 'There is no running instance of the task'
+        -
+          value: '0x8004130D'
+          newvalue: 'The task object could not be opened'
+        -
+          value: '0x8004130E'
+          newvalue: 'The object is either an invalid task object'
+        -
+          value: '0x8004130F'
+          newvalue: 'Corrupted IDs'
+        -
+          value: '0x8004131A'
+          newvalue: 'The task XML is malformed'
+        -
+          value: '0x8004131D'
+          newvalue: 'The task XML contains too many nodes of the same type'
+        -
+          value: '0x8004131E'
+          newvalue: 'The task cannot be started after the trigger end boundary'
+        -
+          value: '0x8004131F'
+          newvalue: 'An instance of this task is already running'
+        -
+          value: '0x8007010B'
+          newvalue: 'The "start in" directory can not be found'
+        -
+          value: '0x8007045B'
+          newvalue: 'Computer in process of shutting down'
+        -
+          value: '0x80041309'
+          newvalue: 'A task''s trigger is not found'
+        -
+          value: '0x80041310'
+          newvalue: 'Unable to establish existence of the account specified'
+        -
+          value: '0x80041311'
+          newvalue: 'Corruption was detected in the Task Scheduler security database'
+        -
+          value: '0x80041313'
+          newvalue: 'The task object version is either unsupported or invalid'
+        -
+          value: '0x80041314'
+          newvalue: 'Unsupported combination of account settings and run time option'
+        -
+          value: '0x80041315'
+          newvalue: 'The Task Scheduler Service is not running'
+        -
+          value: '0x80041316'
+          newvalue: 'The task XML contains an unexpected node'
+        -
+          value: '0x80041317'
+          newvalue: 'XML contains element or attribute from an unexpected namespace'
+        -
+          value: '0x80041318'
+          newvalue: 'XML contains value which is incorrectly formatted or out of rang'
+        -
+          value: '0x80041319'
+          newvalue: 'The task XML is missing a required element or attribute'
+        -
+          value: '0x80041320'
+          newvalue: 'The task will not run because the user is not logged on'
+        -
+          value: '0x80041321'
+          newvalue: 'The task image is corrupt or has been tampered with'
+        -
+          value: '0x80041323'
+          newvalue: 'The Task Scheduler service is too busy to handle your request'
+        -
+          value: '0x80041324'
+          newvalue: 'Task did not run due to one of the constraints in the task defi'
+        -
+          value: '0x80041326'
+          newvalue: 'The task is disabled'
+        -
+          value: '0x80041327'
+          newvalue: 'The task has properties that are not compatible with earlier ver'
+        -
+          value: '0x80041328'
+          newvalue: 'The task settings do not allow the task to start on demand'
+        -
+          value: '0x80070002'
+          newvalue: 'One of the files is not available'
+        -
+          value: '0xC06D007E'
+          newvalue: 'Unknown software exception'
+        -
+          value: '0xFFFD0000'
+          newvalue: 'Incorrect path to exe, incorrect account, etc.'
+        -
+          value: '1'
+          newvalue: 'Incorrect or unknown function called'
+        -
+          value: '2'
+          newvalue: 'File not found'
+        -
+          value: '3'
+          newvalue: '(If robocopy - check logs!)'
+        -
+          value: '10'
+          newvalue: 'Incorrect environment'
+        -
+          value: '267008'
+          newvalue: 'Task is ready to run at its next scheduled time'
+        -
+          value: '267009'
+          newvalue: 'Task is currently running'
+        -
+          value: '267010'
+          newvalue: 'The task will not run at the scheduled times because it has been'
+        -
+          value: '267011'
+          newvalue: 'Task has not yet run'
+        -
+          value: '267012'
+          newvalue: 'There are no more runs scheduled for this task'
+        -
+          value: '267013'
+          newvalue: 'One or more of the properties that are needed to run this task o'
+        -
+          value: '267014'
+          newvalue: 'Task canceled by the user'
+        -
+          value: '267015'
+          newvalue: 'Either the task has no triggers or the existing triggers are dis'
+        -
+          value: '2147750671'
+          newvalue: 'Credentials became corrupted'
+        -
+          value: '2147750687'
+          newvalue: 'An instance of this task is already running'
+        -
+          value: '2147943515'
+          newvalue: 'Computer in process of shutting down'
+        -
+          value: '2147943645'
+          newvalue: 'The service is not available'
+        -
+          value: '2147946720'
+          newvalue: 'The operator or administrator has refused the request'
+        -
+          value: '3221225786'
+          newvalue: 'The application terminated as a result of a CTRL+C'
+        -
+          value: '3228369022'
+          newvalue: 'Unknown software exception'
+        -
+          value: '4294770688'
+          newvalue: 'Incorrect path to exe, incorrest account, etc.'

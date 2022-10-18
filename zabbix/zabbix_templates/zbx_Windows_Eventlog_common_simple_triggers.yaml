@@ -1,0 +1,156 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:38:03Z'
+  groups:
+    -
+      name: 'OS Windows by Zabbix agent active'
+    -
+      name: 'Windows Server EventLogs'
+  templates:
+    -
+      template: 'Windows Eventlog common simple triggers'
+      name: 'Windows Eventlog common simple triggers'
+      groups:
+        -
+          name: 'OS Windows by Zabbix agent active'
+        -
+          name: 'Windows Server EventLogs'
+      applications:
+        -
+          name: 'Windows EventLog'
+      items:
+        -
+          name: 'Eventlog Application (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Application,,"Warning|Error|Critical","@Windows Eventlog Application (Warning|Error|Critical) sources to exclude","@Windows Eventlog Application (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and  {logeventid("@Windows Eventlog Application (Warning|Error|Critical) eventid triggers")}=1  and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Application (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog Security'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Security,,,,"@Windows Eventlog Security eventid to monitor",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=7 and {logeventid("@Windows Eventlog Security eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Failure): {ITEM.LASTVALUE3}'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=8 and {logeventid("@Windows Eventlog Security eventid to trigger")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog Security (Audit Success): {ITEM.LASTVALUE3}'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'EventLog Security Servers - successful login'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[Security,,,,4624,,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logeventid(4624)}=1 and {nodata(30)}=0 and {regexp(Administrator)}=1'
+              name: 'Пользователь Administrator вошел в систему'
+              priority: INFO
+            -
+              expression: '{logeventid(4624)}=1 and {nodata(30)}=0 and {regexp(Администратор)}=1'
+              name: 'Пользователь Администратор вошел в систему'
+              priority: INFO
+        -
+          name: 'Eventlog System (Warning|Error|Critical)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[System,,"Warning|Error|Critical",,"@Windows Eventlog System (Warning|Error|Critical) eventid to exclude",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=9 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Critical: {ITEM.LASTVALUE3}'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=4 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Error: {ITEM.LASTVALUE3}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+            -
+              expression: '{logseverity(0)}=2 and {logeventid("@Windows Eventlog System (Warning|Error|Critical) eventid triggers")}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Warning|Error|Critical) Warning: {ITEM.LASTVALUE3}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog
+        -
+          name: 'Eventlog System (Information)'
+          type: ZABBIX_ACTIVE
+          key: 'eventlog[System,,Information,,"@Windows Eventlog System (Information) eventid to monitor",,skip]'
+          history: 30d
+          trends: '0'
+          value_type: LOG
+          applications:
+            -
+              name: 'Windows EventLog'
+          triggers:
+            -
+              expression: '{logseverity(0)}=1 and {nodata(30)}=0 and {regexp(.)}=1'
+              name: 'Eventlog System (Information) Information: {ITEM.LASTVALUE3}'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: WindowsEventLog

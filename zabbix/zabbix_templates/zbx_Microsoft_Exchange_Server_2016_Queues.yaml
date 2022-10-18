@@ -1,0 +1,230 @@
+zabbix_export:
+  version: '5.2'
+  date: '2022-10-18T18:40:50Z'
+  groups:
+    -
+      name: Templates
+  templates:
+    -
+      template: 'Microsoft Exchange Server 2016 Queues'
+      name: 'Microsoft Exchange Server 2016 Queues'
+      description: 'Мониторинг очередей эксчендж'
+      groups:
+        -
+          name: Templates
+      applications:
+        -
+          name: 'MS Exchange Queues'
+      items:
+        -
+          name: 'MS Exchange - Общая длина теневой очереди'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Aggregate Shadow Queue Length"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Общая длина теневой очереди больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Длина внешней очереди активной удаленной доставки'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Active Remote Delivery Queue Length"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Длина внешней очереди активной удаленной доставки больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Общая длина внешних очередей доставки (все внешние очереди)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Aggregate Delivery Queue Length (All External Queues)"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Общая длина внешних очередей доставки (все внешние очереди) больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Длина внешней очереди повторных попыток удаленной доставки'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Retry Remote Delivery Queue Length"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Длина внешней очереди повторных попыток удаленной доставки больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Совокупная длина всех очередей доставки во внутреннее местоположение'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Internal Aggregate Delivery Queue Length (All Internal Queues)"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Совокупная длина всех очередей доставки во внутреннее местоположение больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Сообщений в очереди доставки'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Messages Queued For Delivery"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Сообщений в очереди доставки больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Длина очереди передачи'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Submission Queue Length"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Длина очереди передачи больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+        -
+          name: 'MS Exchange - Длина очереди сообщений с недоступным местом назначения'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Unreachable Queue Length"]'
+          delay: 60s
+          history: 30d
+          trends: 180d
+          value_type: FLOAT
+          applications:
+            -
+              name: 'MS Exchange Queues'
+          triggers:
+            -
+              expression: '{last()}>15'
+              name: 'Длина очереди сообщений с недоступным местом назначения больше 15'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                -
+                  tag: 'Exchange Queue'
+  graphs:
+    -
+      name: 'MS Exchange Очереди'
+      graph_items:
+        -
+          sortorder: '1'
+          color: 1A7C11
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Active Remote Delivery Queue Length"]'
+        -
+          sortorder: '2'
+          color: F63100
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Retry Remote Delivery Queue Length"]'
+        -
+          sortorder: '3'
+          color: 2774A4
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Submission Queue Length"]'
+        -
+          sortorder: '4'
+          color: A54F10
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Unreachable Queue Length"]'
+        -
+          sortorder: '5'
+          color: FC6EA3
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\External Aggregate Delivery Queue Length (All External Queues)"]'
+        -
+          sortorder: '6'
+          color: 6C59DC
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Aggregate Shadow Queue Length"]'
+        -
+          sortorder: '7'
+          color: AC8C14
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Internal Aggregate Delivery Queue Length (All Internal Queues)"]'
+        -
+          sortorder: '8'
+          color: 611F27
+          item:
+            host: 'Microsoft Exchange Server 2016 Queues'
+            key: 'perf_counter_en["\MSExchangeTransport Queues(_total)\Messages Queued For Delivery"]'
