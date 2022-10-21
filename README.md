@@ -8,3 +8,5 @@ Contains some usefull scripts to automate zabbix install, to get some items, to 
 Contains some basics about Git and GitHUb usage
 ## jenkins
 Contains some basics about jenkins, its pipelines and jenkinfiles
+## Docker
+Contains some basics about docker usage
