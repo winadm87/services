@@ -1,0 +1,22 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: "telegram"
+receivers:
+  - name: 'telegram'
+    telegram_configs:
+    - bot_token: 'Place tg bot token here'
+      chat_id: -(place chat id here, no qotes!)
+      send_resolved: true
+      api_url: "https://api.telegram.org"
+      parse_mode: "HTML"
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']

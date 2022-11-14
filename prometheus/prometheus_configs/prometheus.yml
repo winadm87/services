@@ -1,0 +1,77 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "rules.yml"
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9090"]
+
+# Linux Servers
+  - job_name: linux-servers-common
+    static_configs:
+      - targets: ['localhost:9100']
+        labels:
+          alias: srv-pms
+# Apache Servers
+  - job_name: apache-servers
+    static_configs:
+      - targets: ['192.168.168.168:9117']
+        labels:
+          alias: srv-apache1
+# Nginx Servers
+  - job_name: nginx-server
+    static_configs:
+      - targets: ['192.186.186.186:9113']
+        labels:
+          alias: srv-nginx
+# DB servers
+  - job_name: db-servers
+    static_configs:
+      - targets: ['192.177.177.177:9104']
+        labels:
+          alias: srv-db
+# Blackbkox servers
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - http://gmail.cpom
+        - https://github.com
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9115  # The blackbox exporter's real hostname:port.
+# AlertManager
+  - job_name: alertmanager
+    static_configs:
+      - targets: ['localhost:9093']
+
+

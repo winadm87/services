@@ -424,3 +424,167 @@ sudo systemctl enable nginx_prometheus_exporter.service
         labels:
           alias: srv-test3-nginx
 ==================================
+
+# lets install blackbox exporter
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.22.0/blackbox_exporter-0.22.0.linux-amd64.tar.gz
+# unarchive and copy blackbox-exporter to /usr/local/bin, copy blackbox.yml to /etc/prometheus/
+# lets change blackbox.yml a little
+
+==================================
+modules:
+  http_2xx:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4" # defaults to "ip6"
+      ip_protocol_fallback: false  # no fallback to "ip6"
+  http_post_2xx:
+    prober: http
+    http:
+      method: POST
+      preferred_ip_protocol: "ip4" # defaults to "ip6"
+      ip_protocol_fallback: false  # no fallback to "ip6"
+==================================
+
+# next we create a service 
+sudo nano /etc/systemd/system/blackbox_exporter.service
+
+==================================
+[Unit]
+Description=Blackbox Exporter Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/blackbox_exporter \
+  --config.file=/etc/prometheus/blackbox.yml \
+  --web.listen-address=":9115"
+
+
+SyslogIdentifier=blackbox
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+==================================
+
+sudo systemctl daemon-reload
+sudo systemctl start blackbox
+sudo systemctl enable blackbox
+
+# next we have to add a new scrapper in /etc/prometheus/prometheus.yml
+==================================
+# Blackbkox servers
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - http://yandex.ru    # Target to probe with http.
+        - https://github.com  # Target to probe with https.
+        - http://hub.docker.com   #
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9115  # The blackbox exporter's real hostname:port.
+==================================
+
+# restart prometheus and check http://promip:9115 if test are successfull
+
+# lets create mysqld exporter
+# download exporter
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.14.0/mysqld_exporter-0.14.0.linux-amd64.tar.gz
+# create mysql user for prometheus
+CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'StrongPassword' WITH MAX_USER_CONNECTIONS 2;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost';
+FLUSH PRIVILEGES;
+EXIT
+# create ansible vault with mysql root password
+ansible-vault encrypt_string 'P@$$w0rd' --name 'mysql_root_password'
+# will get something like this
+
+===================================
+!vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61393465613437303635346439636635623061353537653834323833343736313631633363663962
+          3435366134623265383961396437633334376530323664370a653462383839393434666461633264
+          32306262376330316634373961636631386263633364386366383634393233366639663630353166
+          3139633839323937360a663366626364363363343036653264353634383838326364333432373966
+          62333163356334326633653265643862353034336162656264643835303230333832
+===================================
+
+# create /etc/.mysqld_exporter.cnf file
+sudo nano /etc/.mysqld_exporter.cnf
+
+===================================
+[client]
+user=mysqld_exporter
+password=StrongPassword
+===================================
+
+# set permissions for this file
+sudo chown root:prometheus /etc/.mysqld_exporter.cnf
+# create system daemon
+sudo nano /etc/systemd/system/mysql_exporter.service
+
+===================================
+[Unit]
+Description=Prometheus MySQL Exporter
+After=network.target
+User=prometheus
+Group=prometheus
+
+[Service]
+Type=simple
+Restart=always
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/mysqld_exporter \
+--config.my-cnf /etc/.mysqld_exporter.cnf \
+--collect.global_status \
+--collect.info_schema.innodb_metrics \
+--collect.auto_increment.columns \
+--collect.info_schema.processlist \
+--collect.binlog_size \
+--collect.info_schema.tablestats \
+--collect.global_variables \
+--collect.info_schema.query_response_time \
+--collect.info_schema.userstats \
+--collect.info_schema.tables \
+--collect.perf_schema.tablelocks \
+--collect.perf_schema.file_events \
+--collect.perf_schema.eventswaits \
+--collect.perf_schema.indexiowaits \
+--collect.perf_schema.tableiowaits \
+--collect.slave_status \
+--web.listen-address=0.0.0.0:9104
+
+SyslogIdentifier=mysqld_exporter
+
+[Install]
+WantedBy=multi-user.target
+===================================
+
+sudo systemctl daemon-reload
+sudo systemctl start blackbox
+sudo systemctl enable blackbox
+
+# change prometheus.yml
+
+===================================
+scrape_configs:
+  - job_name: server1_db
+    static_configs:
+      - targets: ['10.10.1.10:9104']
+        labels:
+          alias: db1
+===================================
+
+# and run a playbook with tag and ask for vault pass
+ansible-playbook playbook-run-prometheus-role.yaml --tags mysqld --ask-vault-pass

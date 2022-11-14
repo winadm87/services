@@ -1,0 +1,22 @@
+[Unit]
+Description=Prometheus
+Documentation=https://github.com/nginxinc/nginx-prometheus-exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/nginx-prometheus-exporter \
+  -nginx.scrape-uri=http://localhost/basic_status \
+  -web.listen-address=:9113 \
+  -web.telemetry-path="/metrics"
+
+SyslogIdentifier=nginx-prometheus-exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
