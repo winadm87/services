@@ -20,6 +20,8 @@ sudo mkdir -p $1
 # init
 cd $1
 git init .
+# create alias to get readable git log
+alias graph="git log --all --decorate --oneline --graph"
 
 # work with files
 # create ignore file
