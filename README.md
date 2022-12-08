@@ -8,3 +8,4 @@ Here is the list:
 - Docker: contains some basics about docker usage
 - Prometheus: basic installation and configuration with examples
 - Kubernetes: basic installation and manipulation examples
+- Terraform: some basic examples of terraform usage
